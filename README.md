@@ -2,7 +2,7 @@
 
 # elum-state
 Reactive global state management library with an emphasis on minimalism.
-## install
+## Installation
 > YARN
 
 	yarn add elum-state
@@ -10,7 +10,7 @@ Reactive global state management library with an emphasis on minimalism.
 
 	npm i -s elum-state
 
-## Started
+## Getting Started
 ### RootState
 Components that use global state need `RootState` to appear somewhere in the parent tree. A good place to put this is in your root component:
 ```jsx
