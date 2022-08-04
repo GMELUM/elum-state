@@ -12,7 +12,7 @@ Reactive global state management library with an emphasis on minimalism.
 
 ## Started
 ### RootState
-Components that use recoil state need `RootState` to appear somewhere in the parent tree. A good place to put this is in your root component:
+Components that use global state need `RootState` to appear somewhere in the parent tree. A good place to put this is in your root component:
 ```ts
 const app = document.getElementById("app") as  HTMLElement;
 const root = createRoot(app);
