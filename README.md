@@ -14,12 +14,12 @@ Reactive global state management library with an emphasis on minimalism.
 ### RootState
 Components that use global state need `RootState` to appear somewhere in the parent tree. A good place to put this is in your root component:
 ```jsx
-const app = document.getElementById("app") as  HTMLElement;
+const app = document.getElementById("app") as HTMLElement;
 const root = createRoot(app);
 root.render(
 	<RootState>
 		<StrictMode>
-			<App />
+			<App/>
 		</StrictMode>
 	</RootState>
 );
@@ -41,7 +41,7 @@ const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
 	const [state, setState] = useGlobalState(EXAMPLE_ATOM);
-	return (<div>{state}</div>)
+	return (<div>{state}</div>);
 }
 ```
 
@@ -54,7 +54,7 @@ const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
 	const state = useGlobalValue(EXAMPLE_ATOM);
-	return (<div>{state}</div>)
+	return (<div>{state}</div>);
 }
 ```
 
@@ -77,7 +77,7 @@ const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
 	const [state, setState] = useFreeGlobalState(EXAMPLE_ATOM);
-	return (<div>{state}</div>)
+	return (<div>{state}</div>);
 }
 ```
 
@@ -89,7 +89,7 @@ const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
 	const state = useGlobalUnSubscribe(EXAMPLE_ATOM);
-	return (<div>{state}</div>)
+	return (<div>{state}</div>);
 }
 ```
 ## License
