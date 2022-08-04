@@ -1,0 +1,28 @@
+{
+  "name": "elum-state",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "",
+  "main": "./index.min.js",
+  "module": "./index.js",
+  "typings": "./index.d.ts",
+  "types": "./index.d.ts",
+  "license": "MIT",
+  "author": { "name": "Artur Frank", "url":"https://vk.com/gmelum"},
+  "contributors": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GMELUM/elum-state.git"
+  },
+  "peerDependencies": {
+    "react": "^18 || ^17",
+    "react-dom": "^18 || ^17"
+  },
+  "keywords": [
+    "state manager",
+    "react",
+    "recoil",
+    "state",
+    "elum"
+  ]
+}
