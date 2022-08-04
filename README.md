@@ -13,7 +13,7 @@ Reactive global state management library with an emphasis on minimalism.
 ## Started
 ### RootState
 Components that use global state need `RootState` to appear somewhere in the parent tree. A good place to put this is in your root component:
-```ts
+```jsx
 const app = document.getElementById("app") as  HTMLElement;
 const root = createRoot(app);
 root.render(
@@ -27,7 +27,7 @@ root.render(
 
 ### Atom
 An **atom** represents a piece of **state**. Atoms can be read from and written to from any component. Components that read the value of an atom are implicitly **subscribed** to that atom, so any atom updates will result in a re-render of all components subscribed to that atom:
-```ts
+```jsx
 const EXAMPLE_ATOM = atom({
 	key: "example_atom", // unique ID key value
 	default: "" // default value
@@ -36,7 +36,7 @@ const EXAMPLE_ATOM = atom({
 
 ### useGlobalState
 This API is similar to the React [`useState()`](https://reactjs.org/docs/hooks-reference.html#usestate) hook except it takes a Global State state instead of a default value as an argument. It returns a tuple of the current value of the state and a setter function. The setter function may either take a new value as an argument or an updater function which receives the previous value as a parameter.
-```ts
+```jsx
 const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
@@ -49,7 +49,7 @@ const App = () => {
 Returns the value of the given global state.
 This hook will subscribe the component to re-render if there are changing in the global state.
 
-```ts
+```jsx
 const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
@@ -60,7 +60,7 @@ const App = () => {
 
 ### useSetGlobalState
 Returns a setter function for updating the value of writeable global state.
-```ts
+```jsx
 const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
@@ -72,7 +72,7 @@ const App = () => {
 ### useFreeGlobalState
 This API is similar to the React [`useState()`](https://reactjs.org/docs/hooks-reference.html#usestate) hook except it takes a Global State state instead of a default value as an argument. It returns a tuple of the current value of the state and a setter function. The setter function may either take a new value as an argument or an updater function which receives the previous value as a parameter. This hook will not subscribe the component to re-render if there are changing in the global state.
 
-```ts
+```jsx
 const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
@@ -84,7 +84,7 @@ const App = () => {
 ### useGlobalUnSubscribe
 Returns the value of the given global state.
 This hook will not subscribe the component to re-render if there are changing in the global state.
-```ts
+```jsx
 const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
