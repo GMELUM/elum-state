@@ -3,19 +3,10 @@
     "name": "Artur Frank",
     "url": "https://vk.com/gmelum"
   },
-  "contributors": [
-    {
-      "name": "dsedinkin",
-      "url": "https://github.com/dsedinkin"
-    },
-    {
-      "name": "im-rasulev",
-      "url": "https://github.com/im-rasulev"
-    }
-  ],
+  "contributors": [],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GMELUM/elum-libs.git"
+    "url": "git+https://github.com/GMELUM/elum-state.git"
   },
   "scripts": {
     "build": "tsc && cp -r static/* ./dist",
