@@ -42,7 +42,7 @@ const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 const App = () => {
 	const [state, setState] = useGlobalState(EXAMPLE_ATOM);
 	return (<div>{state}</div>);
-}
+};
 ```
 
 ### useGlobalValue
@@ -55,7 +55,7 @@ const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 const App = () => {
 	const state = useGlobalValue(EXAMPLE_ATOM);
 	return (<div>{state}</div>);
-}
+};
 ```
 
 ### useSetGlobalState
@@ -66,7 +66,7 @@ const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 const App = () => {
 	const setState = useSetGlobalState(EXAMPLE_ATOM);
 	return (<div onClick={() => setState("hello")}></div>);
-}
+};
 ```
 
 ### useFreeGlobalState
@@ -78,7 +78,7 @@ const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 const App = () => {
 	const [state, setState] = useFreeGlobalState(EXAMPLE_ATOM);
 	return (<div>{state}</div>);
-}
+};
 ```
 
 ### useGlobalUnSubscribe
@@ -90,7 +90,7 @@ const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 const App = () => {
 	const state = useGlobalUnSubscribe(EXAMPLE_ATOM);
 	return (<div>{state}</div>);
-}
+};
 ```
 ## License
 elum-team is [MIT license](./LICENSE).
