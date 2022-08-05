@@ -13,19 +13,6 @@ Reactive global state management library with an emphasis on minimalism.
 	npm i -s elum-state
 
 ## Getting Started
-### RootState
-Components that use global state need `RootState` to appear somewhere in the parent tree. A good place to put this is in your root component:
-```jsx
-const app = document.getElementById("app") as HTMLElement;
-const root = createRoot(app);
-root.render(
-	<RootState>
-		<StrictMode>
-			<App/>
-		</StrictMode>
-	</RootState>
-);
-```
 ### Atom
 An **atom** represents a piece of **state**. Atoms can be read from and written to from any component. Components that read the value of an atom are implicitly **subscribed** to that atom, so any atom updates will result in a re-render of all components subscribed to that atom:
 ```jsx

@@ -16,22 +16,6 @@
 	npm i -s elum-state
 
 ## Использование
-
-### RootState
-
-Компонент реализующий хранение и управление глобальными состояниями. Рекомендуется использовать его как родительский компонент в проекте:
-```jsx
-const app = document.getElementById("app") as HTMLElement;
-const root = createRoot(app);
-root.render(
-	<RootState>
-		<StrictMode>
-			<App/>
-		</StrictMode>
-	</RootState>
-);
-```
-
 ### Atom
 
 **Атом** является частью глобальных состояний и используется для инициализации глобальных состояний.
