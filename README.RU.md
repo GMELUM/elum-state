@@ -1,5 +1,4 @@
-
-# [![GitHub license](https://badgen.net/badge/license/MIT/blue)](https://github.com/GMELUM/elum-state/blob/master/LICENSE) [![npm bundle size](https://img.shields.io/bundlephobia/min/elum-state)](https://bundlephobia.com/result?p=elum-state)
+# [![GitHub license](https://badgen.net/badge/license/MIT/blue)](https://github.com/GMELUM/elum-state/blob/master/LICENSE) [![npm bundle size](https://img.shields.io/bundlephobia/min/elum-state)](https://bundlephobia.com/result?p=elum-state) [![npm bundle size](https://img.shields.io/bundlephobia/minzip/elum-state)](https://bundlephobia.com/result?p=elum-state)
 
 ## Язык: [RU](./README.RU.md) | [EN](./README.md)
 
