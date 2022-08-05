@@ -66,7 +66,7 @@ export const
   useGlobalState = <T>(st: GlobalAtom<T>): [T, (v: T) => void] => [useGlobalValue(st), useSetGlobalState(st)],
   useFreeGlobalState = <T>(st: GlobalAtom<T>): [{ current: T }, (v: T) => void] => [useGlobalUnSubscribe(st), useSetGlobalState(st)],
   useGlobalUnSubscribe = <T>(st: GlobalAtom<T>): { current: T } => {
-    const v = useRef<T>(c.s.get(st.key));
+    const v = useRef<T>(c.s.get(st.key) || st.default);
     useLayoutEffect(() => st.sub((vl: T) => { v.current = vl }), []);
     return v;
   };

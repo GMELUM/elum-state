@@ -22,7 +22,7 @@ export const atom = (opt) => stateAtom(opt), useGlobalValue = (st) => {
     useLayoutEffect(() => st.sub(dispatch), []);
     return v;
 }, useSetGlobalState = (st) => (v) => c.em.emit(st.key, v), useGlobalState = (st) => [useGlobalValue(st), useSetGlobalState(st)], useFreeGlobalState = (st) => [useGlobalUnSubscribe(st), useSetGlobalState(st)], useGlobalUnSubscribe = (st) => {
-    const v = useRef(c.s.get(st.key));
+    const v = useRef(c.s.get(st.key) || st.default);
     useLayoutEffect(() => st.sub((vl) => { v.current = vl; }), []);
     return v;
 };

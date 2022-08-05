@@ -1,6 +1,6 @@
 {
   "name": "elum-state",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Reactive global state management library with an emphasis on minimalism.",
   "main": "./index.js",
   "types": "./index.d.ts",
