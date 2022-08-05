@@ -1,9 +1,9 @@
 import { Dispatch, useLayoutEffect, useRef, useState } from "react";
 
 type EventType = string | symbol;
-type Handler<T = unknown> = (event: T) => void;
-type EventHandlerList<T = unknown> = Array<Handler<T>>;
-type EventHandlerMap<Events extends Record<EventType, unknown>> = Map<keyof Events, EventHandlerList<Events[keyof Events]>>;
+type h<T = unknown> = (event: T) => void;
+type EventhList<T = unknown> = Array<h<T>>;
+type EventhMap<Events extends Record<EventType, unknown>> = Map<keyof Events, EventhList<Events[keyof Events]>>;
 
 type Atom<T> = {
   key: string;
@@ -14,59 +14,59 @@ type GlobalAtom<T> = {
   key: string;
   default: T;
   get: () => T;
-  set: (value: any) => void;
+  set: (v: any) => void;
   sub: (handle: Dispatch<T>) => void;
 }
 
-const emmiter = <Events extends Record<EventType, unknown>>(
-  all: EventHandlerMap<Events> = new Map()
+const em = <Events extends Record<EventType, unknown>>(
+  a: EventhMap<Events> = new Map()
 ) => ({
-  all,
+  a,
   on: <Key extends keyof Events>(
-    type: Key,
-    handler: Handler<Events[keyof Events]>,
-    handlers: EventHandlerList<Events[keyof Events]> | undefined = all.get(type)) =>
-    handlers ? handlers.push(handler) : all.set(type, [handler] as EventHandlerList<Events[keyof Events]>)
+    t: Key,
+    h: h<Events[keyof Events]>,
+    hs: EventhList<Events[keyof Events]> | undefined = a.get(t)) =>
+    hs ? hs.push(h) : a.set(t, [h] as EventhList<Events[keyof Events]>)
   ,
   off: <Key extends keyof Events>(
-    type: Key,
-    handler: Handler<Events[keyof Events]>,
-    handlers: EventHandlerList<Events[keyof Events]> | undefined = all.get(type)) =>
-    handlers && handler ? handlers.splice(handlers.indexOf(handler) >>> 0, 1) : all.set(type, [])
+    t: Key,
+    h: h<Events[keyof Events]>,
+    hs: EventhList<Events[keyof Events]> | undefined = a.get(t)) =>
+    hs && h ? hs.splice(hs.indexOf(h) >>> 0, 1) : a.set(t, [])
   ,
   emit: <Key extends keyof Events>(
-    type: Key,
-    evt?: Events[Key],
-    handlers: EventHandlerList<Events[keyof Events]> | undefined = all.get(type)) =>
-    handlers && evt && handlers.slice().map((handler) => handler(evt))
+    t: Key,
+    e?: Events[Key],
+    hs: EventhList<Events[keyof Events]> | undefined = a.get(t)) =>
+    hs && e && hs.slice().map((h) => h(e))
 }),
-  context = {
-    store: new Map<string, any>(),
-    emmit: emmiter<Record<string, any>>()
+  c = {
+    s: new Map<string, any>(),
+    em: em<Record<string, any>>()
   },
   stateAtom = <T>(opt: Atom<T>): GlobalAtom<T> => ({
     key: opt.key,
     default: opt.default,
-    get: () => context.store.get(opt.key) || opt.default,
-    set: (value) => context.store.set(opt.key, value),
-    sub: (handler) => {
-      context.emmit.on(opt.key, handler);
-      return () => context.emmit.off(opt.key, handler);
+    get: () => c.s.get(opt.key) || opt.default,
+    set: (v) => c.s.set(opt.key, v),
+    sub: (h) => {
+      c.em.on(opt.key, h);
+      return () => c.em.off(opt.key, h);
     }
   });
 
 export const
   atom = <T>(opt: Atom<T>) => stateAtom(opt),
-  useGlobalValue = <T>(state: GlobalAtom<T>): T => {
-    const [value, dispatch] = useState(state.get());
-    useLayoutEffect(() => state.sub(dispatch), []);
-    return value;
+  useGlobalValue = <T>(st: GlobalAtom<T>): T => {
+    const [v, dispatch] = useState(st.get());
+    useLayoutEffect(() => st.sub(dispatch), []);
+    return v;
   },
-  useSetGlobalState = <T>(state: GlobalAtom<T>): (value: T) => void => (value: T) => context.emmit.emit(state.key, value),
-  useGlobalState = <T>(state: GlobalAtom<T>): [T, (value: T) => void] => [useGlobalValue(state), useSetGlobalState(state)],
-  useFreeGlobalState = <T>(state: GlobalAtom<T>): [{ current: T }, (value: T) => void] => [useGlobalUnSubscribe(state), useSetGlobalState(state)],
-  useGlobalUnSubscribe = <T>(state: GlobalAtom<T>): { current: T } => {
-    const value = useRef<T>(context.store.get(state.key));
-    useLayoutEffect(() => state.sub((v: T) => { value.current = v }), []);
-    return value;
+  useSetGlobalState = <T>(st: GlobalAtom<T>): (v: T) => void => (v: T) => c.em.emit(st.key, v),
+  useGlobalState = <T>(st: GlobalAtom<T>): [T, (v: T) => void] => [useGlobalValue(st), useSetGlobalState(st)],
+  useFreeGlobalState = <T>(st: GlobalAtom<T>): [{ current: T }, (v: T) => void] => [useGlobalUnSubscribe(st), useSetGlobalState(st)],
+  useGlobalUnSubscribe = <T>(st: GlobalAtom<T>): { current: T } => {
+    const v = useRef<T>(c.s.get(st.key));
+    useLayoutEffect(() => st.sub((vl: T) => { v.current = vl }), []);
+    return v;
   };

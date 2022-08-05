@@ -1,28 +1,28 @@
 import { useLayoutEffect, useRef, useState } from "react";
-const emmiter = (all = new Map()) => ({
-    all,
-    on: (type, handler, handlers = all.get(type)) => handlers ? handlers.push(handler) : all.set(type, [handler]),
-    off: (type, handler, handlers = all.get(type)) => handlers && handler ? handlers.splice(handlers.indexOf(handler) >>> 0, 1) : all.set(type, []),
-    emit: (type, evt, handlers = all.get(type)) => handlers && evt && handlers.slice().map((handler) => handler(evt))
-}), context = {
-    store: new Map(),
-    emmit: emmiter()
+const em = (a = new Map()) => ({
+    a,
+    on: (t, h, hs = a.get(t)) => hs ? hs.push(h) : a.set(t, [h]),
+    off: (t, h, hs = a.get(t)) => hs && h ? hs.splice(hs.indexOf(h) >>> 0, 1) : a.set(t, []),
+    emit: (t, e, hs = a.get(t)) => hs && e && hs.slice().map((h) => h(e))
+}), c = {
+    s: new Map(),
+    em: em()
 }, stateAtom = (opt) => ({
     key: opt.key,
     default: opt.default,
-    get: () => context.store.get(opt.key) || opt.default,
-    set: (value) => context.store.set(opt.key, value),
-    sub: (handler) => {
-        context.emmit.on(opt.key, handler);
-        return () => context.emmit.off(opt.key, handler);
+    get: () => c.s.get(opt.key) || opt.default,
+    set: (v) => c.s.set(opt.key, v),
+    sub: (h) => {
+        c.em.on(opt.key, h);
+        return () => c.em.off(opt.key, h);
     }
 });
-export const atom = (opt) => stateAtom(opt), useGlobalValue = (state) => {
-    const [value, dispatch] = useState(state.get());
-    useLayoutEffect(() => state.sub(dispatch), []);
-    return value;
-}, useSetGlobalState = (state) => (value) => context.emmit.emit(state.key, value), useGlobalState = (state) => [useGlobalValue(state), useSetGlobalState(state)], useFreeGlobalState = (state) => [useGlobalUnSubscribe(state), useSetGlobalState(state)], useGlobalUnSubscribe = (state) => {
-    const value = useRef(context.store.get(state.key));
-    useLayoutEffect(() => state.sub((v) => { value.current = v; }), []);
-    return value;
+export const atom = (opt) => stateAtom(opt), useGlobalValue = (st) => {
+    const [v, dispatch] = useState(st.get());
+    useLayoutEffect(() => st.sub(dispatch), []);
+    return v;
+}, useSetGlobalState = (st) => (v) => c.em.emit(st.key, v), useGlobalState = (st) => [useGlobalValue(st), useSetGlobalState(st)], useFreeGlobalState = (st) => [useGlobalUnSubscribe(st), useSetGlobalState(st)], useGlobalUnSubscribe = (st) => {
+    const v = useRef(c.s.get(st.key));
+    useLayoutEffect(() => st.sub((vl) => { v.current = vl; }), []);
+    return v;
 };
