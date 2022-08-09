@@ -1,4 +1,4 @@
-import { Dispatch, useLayoutEffect as useLE, useRef, useState } from "react";
+import { Dispatch, useLayoutEffect, useRef, useState } from "react";
 
 type EventType = string | symbol;
 type h<T = unknown> = (event: T) => void;
@@ -59,7 +59,7 @@ export const
   atom = <T>(o: Atom<T>) => st(o),
   useGlobalValue = <T>(st: GlobalAtom<T>): T => {
     const [v, d] = useState(st.g());
-    useLE(() => st.s(d), []);
+    useLayoutEffect(() => st.s(d), []);
     return v;
   },
   useSetGlobalState = <T>(st: GlobalAtom<T>): (v: T) => void => (v: T) => c.em.emit(st.k, v),
@@ -67,6 +67,6 @@ export const
   useUnSubGlobalState = <T>(st: GlobalAtom<T>): [{ current: T }, (v: T) => void] => [useUnSubGlobalValue(st), useSetGlobalState(st)],
   useUnSubGlobalValue = <T>(st: GlobalAtom<T>): { current: T } => {
     const v = useRef<T>(c.s.get(st.k) || st.d);
-    useLE(() => st.sb((vl: T) => { v.current = vl }), []);
+    useLayoutEffect(() => st.sb((vl: T) => { v.current = vl }), []);
     return v;
   };

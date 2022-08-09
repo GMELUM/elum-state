@@ -55,26 +55,26 @@ const App = () => {
 };
 ```
 
-### useFreeGlobalState
+### useUnSubGlobalState
 This API is similar to the React [`useState()`](https://reactjs.org/docs/hooks-reference.html#usestate) hook except it takes a Global State state instead of a default value as an argument. It returns a tuple of the current value of the state and a setter function. The setter function may either take a new value as an argument or an updater function which receives the previous value as a parameter. This hook will not subscribe the component to re-render if there are changing in the global state.
 
 ```jsx
 const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
-	const [state, setState] = useFreeGlobalState(EXAMPLE_ATOM);
+	const [state, setState] = useUnSubGlobalState(EXAMPLE_ATOM);
 	return (<div>{state}</div>);
 };
 ```
 
-### useGlobalUnSubscribe
+### useUnSubGlobalValue
 Returns the value of the given global state.
 This hook will not subscribe the component to re-render if there are changing in the global state.
 ```jsx
 const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
-	const state = useGlobalUnSubscribe(EXAMPLE_ATOM);
+	const state = useUnSubGlobalValue(EXAMPLE_ATOM);
 	return (<div>{state}</div>);
 };
 ```

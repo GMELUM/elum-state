@@ -64,7 +64,7 @@ const App = () => {
 };
 ```
 
-### useFreeGlobalState
+### useUnSubGlobalState
 
 Этот хук похож на API React [`useState()`](https://reactjs.org/docs/hooks-reference.html#usestate) за исключением того что он приминает **Atom** для инициализации хука вместо значения по умолчанию. Хук возвращает массив с текущим состоянием и функцией для обновления глобального состояния.
 
@@ -73,11 +73,11 @@ const App = () => {
 const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
-	const [state, setState] = useFreeGlobalState(EXAMPLE_ATOM);
+	const [state, setState] = useUnSubGlobalState(EXAMPLE_ATOM);
 	return (<div>{state}</div>);
 };
 ```
-### useGlobalUnSubscribe
+### useUnSubGlobalValue
 
 
 Возвращает значение данного глобального состояния.
@@ -86,7 +86,7 @@ const App = () => {
 const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
-	const state = useGlobalUnSubscribe(EXAMPLE_ATOM);
+	const state = useUnSubGlobalValue(EXAMPLE_ATOM);
 	return (<div>{state}</div>);
 };
 ```
