@@ -7,22 +7,22 @@ const em = (a = new Map()) => ({
 }), c = {
     s: new Map(),
     em: em()
-}, st = (o) => ({
-    k: o.key,
-    d: o.default,
-    g: () => c.s.get(o.key) || o.default,
-    s: (v) => c.s.set(o.key, v),
-    sb: (h) => {
-        c.em.on(o.key, h);
-        return () => c.em.off(o.key, h);
+}, stateAtom = (opt) => ({
+    key: opt.key,
+    default: opt.default,
+    get: () => c.s.get(opt.key) || opt.default,
+    set: (v) => c.s.set(opt.key, v),
+    sub: (h) => {
+        c.em.on(opt.key, h);
+        return () => c.em.off(opt.key, h);
     }
 });
-export const atom = (o) => st(o), useGlobalValue = (st) => {
-    const [v, d] = useState(st.g());
-    useLayoutEffect(() => st.s(d), []);
+export const atom = (opt) => stateAtom(opt), useGlobalValue = (st) => {
+    const [v, dispatch] = useState(st.get());
+    useLayoutEffect(() => st.sub(dispatch), []);
     return v;
-}, useSetGlobalState = (st) => (v) => c.em.emit(st.k, v), useGlobalState = (st) => [useGlobalValue(st), useSetGlobalState(st)], useUnSubGlobalState = (st) => [useUnSubGlobalValue(st), useSetGlobalState(st)], useUnSubGlobalValue = (st) => {
-    const v = useRef(c.s.get(st.k) || st.d);
-    useLayoutEffect(() => st.sb((vl) => { v.current = vl; }), []);
+}, useSetGlobalState = (st) => (v) => c.em.emit(st.key, v), useGlobalState = (st) => [useGlobalValue(st), useSetGlobalState(st)], useUnSubGlobalState = (st) => [useUnSubGlobalValue(st), useSetGlobalState(st)], useUnSubGlobalValue = (st) => {
+    const v = useRef(c.s.get(st.key) || st.default);
+    useLayoutEffect(() => st.sub((vl) => { v.current = vl; }), []);
     return v;
 };
