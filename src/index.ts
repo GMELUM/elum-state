@@ -1,4 +1,4 @@
-import { Dispatch, useLayoutEffect, useRef, useState } from "react";
+import { Dispatch, useLayoutEffect as useLE, useRef, useState } from "react";
 
 type EventType = string | symbol;
 type h<T = unknown> = (event: T) => void;
@@ -11,11 +11,11 @@ type Atom<T> = {
 };
 
 type GlobalAtom<T> = {
-  key: string;
-  default: T;
-  get: () => T;
-  set: (v: any) => void;
-  sub: (handle: Dispatch<T>) => void;
+  k: string;
+  d: T;
+  g: () => T;
+  s: (v: any) => void;
+  sb: (handle: Dispatch<T>) => void;
 }
 
 const em = <Events extends Record<EventType, unknown>>(
@@ -44,29 +44,29 @@ const em = <Events extends Record<EventType, unknown>>(
     s: new Map<string, any>(),
     em: em<Record<string, any>>()
   },
-  stateAtom = <T>(opt: Atom<T>): GlobalAtom<T> => ({
-    key: opt.key,
-    default: opt.default,
-    get: () => c.s.get(opt.key) || opt.default,
-    set: (v) => c.s.set(opt.key, v),
-    sub: (h) => {
-      c.em.on(opt.key, h);
-      return () => c.em.off(opt.key, h);
+  st = <T>(o: Atom<T>): GlobalAtom<T> => ({
+    k: o.key,
+    d: o.default,
+    g: () => c.s.get(o.key) || o.default,
+    s: (v) => c.s.set(o.key, v),
+    sb: (h) => {
+      c.em.on(o.key, h);
+      return () => c.em.off(o.key, h);
     }
   });
 
 export const
-  atom = <T>(opt: Atom<T>) => stateAtom(opt),
+  atom = <T>(o: Atom<T>) => st(o),
   useGlobalValue = <T>(st: GlobalAtom<T>): T => {
-    const [v, dispatch] = useState(st.get());
-    useLayoutEffect(() => st.sub(dispatch), []);
+    const [v, d] = useState(st.g());
+    useLE(() => st.s(d), []);
     return v;
   },
-  useSetGlobalState = <T>(st: GlobalAtom<T>): (v: T) => void => (v: T) => c.em.emit(st.key, v),
+  useSetGlobalState = <T>(st: GlobalAtom<T>): (v: T) => void => (v: T) => c.em.emit(st.k, v),
   useGlobalState = <T>(st: GlobalAtom<T>): [T, (v: T) => void] => [useGlobalValue(st), useSetGlobalState(st)],
-  useFreeGlobalState = <T>(st: GlobalAtom<T>): [{ current: T }, (v: T) => void] => [useGlobalUnSubscribe(st), useSetGlobalState(st)],
-  useGlobalUnSubscribe = <T>(st: GlobalAtom<T>): { current: T } => {
-    const v = useRef<T>(c.s.get(st.key) || st.default);
-    useLayoutEffect(() => st.sub((vl: T) => { v.current = vl }), []);
+  useUnSubGlobalState = <T>(st: GlobalAtom<T>): [{ current: T }, (v: T) => void] => [useUnSubGlobalValue(st), useSetGlobalState(st)],
+  useUnSubGlobalValue = <T>(st: GlobalAtom<T>): { current: T } => {
+    const v = useRef<T>(c.s.get(st.k) || st.d);
+    useLE(() => st.sb((vl: T) => { v.current = vl }), []);
     return v;
   };

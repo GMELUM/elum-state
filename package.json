@@ -9,8 +9,8 @@
     "url": "git+https://github.com/GMELUM/elum-state.git"
   },
   "scripts": {
-    "build": "tsc && cp -r static/* ./dist",
-    "minify": "jsmin -o ./dist/index.min.js ./dist/index.js",
+    "build": "tsc && cp -r static/* ./dist && yarn minify",
+    "minify": "terser dist/index.js --output dist/index.js",
     "start": "yarn build && cross-env NODE_PATH=./dist nodemon",
     "release": "git subtree push --prefix dist https://github.com/GMELUM/elum-state release",
     "test": "jest --config jest.config.json"
