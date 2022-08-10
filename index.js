@@ -18,10 +18,11 @@ const em = (a = new Map()) => ({
     }
 });
 export const atom = (opt) => stateAtom(opt), useGlobalValue = (st) => {
-    const [v, dispatch] = useState(st.get());
+    const [v, dispatch] = useState(st.get() || st.default);
+    console.log(st.key, v);
     useLayoutEffect(() => st.sub(dispatch), []);
     return v;
-}, useSetGlobalState = (st) => (v) => c.em.emit(st.key, v), useGlobalState = (st) => [useGlobalValue(st), useSetGlobalState(st)], useUnSubGlobalState = (st) => [useUnSubGlobalValue(st), useSetGlobalState(st)], useUnSubGlobalValue = (st) => {
+}, useSetGlobalState = (st) => (v) => { st.set(v); c.em.emit(st.key, v); }, useGlobalState = (st) => [useGlobalValue(st), useSetGlobalState(st)], useUnSubGlobalState = (st) => [useUnSubGlobalValue(st), useSetGlobalState(st)], useUnSubGlobalValue = (st) => {
     const v = useRef(c.s.get(st.key) || st.default);
     useLayoutEffect(() => st.sub((vl) => { v.current = vl; }), []);
     return v;
