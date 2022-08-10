@@ -58,11 +58,12 @@ const em = <Events extends Record<EventType, unknown>>(
 export const
   atom = <T>(opt: Atom<T>) => stateAtom(opt),
   useGlobalValue = <T>(st: GlobalAtom<T>): T => {
-    const [v, dispatch] = useState(st.get());
+    const [v, dispatch] = useState(st.get() || st.default);
+    console.log(st.key, v)
     useLayoutEffect(() => st.sub(dispatch), []);
     return v;
   },
-  useSetGlobalState = <T>(st: GlobalAtom<T>): (v: T) => void => (v: T) => c.em.emit(st.key, v),
+  useSetGlobalState = <T>(st: GlobalAtom<T>): (v: T) => void => (v: T) => { st.set(v); c.em.emit(st.key, v); },
   useGlobalState = <T>(st: GlobalAtom<T>): [T, (v: T) => void] => [useGlobalValue(st), useSetGlobalState(st)],
   useUnSubGlobalState = <T>(st: GlobalAtom<T>): [{ current: T }, (v: T) => void] => [useUnSubGlobalValue(st), useSetGlobalState(st)],
   useUnSubGlobalValue = <T>(st: GlobalAtom<T>): { current: T } => {
