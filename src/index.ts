@@ -44,30 +44,34 @@ const em = <Events extends Record<EventType, unknown>>(
     s: new Map<string, any>(),
     em: em<Record<string, any>>()
   },
-  stateAtom = <T>(opt: Atom<T>): GlobalAtom<T> => ({
+  a = <T>(opt: Atom<T>): GlobalAtom<T> => ({
     key: opt.key,
     default: opt.default,
-    get: () => c.s.get(opt.key) || opt.default,
-    set: (v) => c.s.set(opt.key, v),
+    get: () => c.s.get(opt.key) ?? opt.default,
+    set: (v) => { c.s.set(opt.key, v); c.em.emit(opt.key, v); },
     sub: (h) => {
       c.em.on(opt.key, h);
       return () => c.em.off(opt.key, h);
     }
-  });
-
-export const
-  atom = <T>(opt: Atom<T>) => stateAtom(opt),
-  useGlobalValue = <T>(st: GlobalAtom<T>): T => {
-    const [v, dispatch] = useState(st.get() || st.default);
-    console.log(st.key, v)
+  }),
+  w = <T>(st: GlobalAtom<T>): T => {
+    const [v, dispatch] = useState(st.get());
     useLayoutEffect(() => st.sub(dispatch), []);
     return v;
   },
-  useSetGlobalState = <T>(st: GlobalAtom<T>): (v: T) => void => (v: T) => { st.set(v); c.em.emit(st.key, v); },
-  useGlobalState = <T>(st: GlobalAtom<T>): [T, (v: T) => void] => [useGlobalValue(st), useSetGlobalState(st)],
-  useUnSubGlobalState = <T>(st: GlobalAtom<T>): [{ current: T }, (v: T) => void] => [useUnSubGlobalValue(st), useSetGlobalState(st)],
-  useUnSubGlobalValue = <T>(st: GlobalAtom<T>): { current: T } => {
-    const v = useRef<T>(c.s.get(st.key) || st.default);
+  q = <T>(st: GlobalAtom<T>): (v: T) => void => (v: T) => st.set(v),
+  e = <T>(st: GlobalAtom<T>): [T, (v: T) => void] => [w(st), q(st)],
+  r = <T>(st: GlobalAtom<T>): [{ current: T }, (v: T) => void] => [t(st), q(st)],
+  t = <T>(st: GlobalAtom<T>): { current: T } => {
+    const v = useRef<T>(st.get());
     useLayoutEffect(() => st.sub((vl: T) => { v.current = vl }), []);
     return v;
   };
+
+export const
+  atom = a,
+  useGlobalValue = w,
+  useSetGlobalState = q,
+  useGlobalState = e,
+  useUnSubGlobalState = r,
+  useUnSubGlobalValue = t;

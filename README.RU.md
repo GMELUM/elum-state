@@ -4,7 +4,7 @@
 
 # elum-state
 
-Библиотека для управления глобальными состояниями в React.
+Elum State - библиотека для управления глобальными состояниями в React.
 
 ## Установка
 > YARN
@@ -90,6 +90,3 @@ const App = () => {
 	return (<div>{state}</div>);
 };
 ```
-## Лицензия
-
-elum-state [MIT license](./LICENSE).

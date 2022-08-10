@@ -1,7 +1,9 @@
 # [![GitHub license](https://badgen.net/badge/license/MIT/blue)](https://github.com/GMELUM/elum-state/blob/master/LICENSE) [![npm bundle size](https://img.shields.io/bundlephobia/min/elum-state)](https://bundlephobia.com/result?p=elum-state) [![npm bundle size](https://img.shields.io/bundlephobia/minzip/elum-state)](https://bundlephobia.com/result?p=elum-state)
 
+## Language: [RU](./README.RU.md) | [EN](./README.md)
+
 # elum-state
-Reactive global state management library with an emphasis on minimalism.
+Elum State - A state management library for React
 ## Installation
 > YARN
 
@@ -78,5 +80,3 @@ const App = () => {
 	return (<div>{state}</div>);
 };
 ```
-## License
-elum-team is [MIT license](./LICENSE).

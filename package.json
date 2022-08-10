@@ -11,6 +11,7 @@
   "scripts": {
     "build": "tsc && cp -r static/* ./dist",
     "start": "yarn build && cross-env NODE_PATH=./dist nodemon",
+    "minify": "terser dist/index.js --output dist/index.js",
     "release": "git subtree push --prefix dist https://github.com/GMELUM/elum-state release"
   },
   "nodemonConfig": {
@@ -26,7 +27,8 @@
     "@types/react-dom": "^18.0.6",
     "nodemon": "^2.0.19",
     "ts-node": "^10.8.2",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "terser": "^5.14.2"
   },
   "dependencies": {
     "react": "^18.2.0",
