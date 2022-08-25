@@ -1,1 +1,28 @@
-import{useLayoutEffect as e,useRef as t,useState as s}from"react";const a={s:new Map,em:((e=new Map)=>({a:e,on:(t,s,a=e.get(t))=>a?a.push(s):e.set(t,[s]),off:(t,s,a=e.get(t))=>a&&s?a.splice(a.indexOf(s)>>>0,1):e.set(t,[]),emit:(t,s,a=e.get(t))=>a&&s&&a.slice().map((e=>e(s)))}))()},u=t=>{const[a,u]=s(t.get());return e((()=>t.sub(u)),[]),a},l=e=>t=>e.set(t),o=s=>{const a=t(s.get());return e((()=>s.sub((e=>{a.current=e}))),[]),a};export const atom=e=>({key:e.key,default:e.default,get:()=>a.s.get(e.key)??e.default,set:t=>{a.s.set(e.key,t),a.em.emit(e.key,t)},sub:t=>(a.em.on(e.key,t),()=>a.em.off(e.key,t))}),useGlobalValue=u,useSetGlobalState=l,useGlobalState=e=>[u(e),l(e)],useUnSubGlobalState=e=>[o(e),l(e)],useUnSubGlobalValue=o;
+import { useLayoutEffect, useRef, useState } from "react";
+const em = (a = new Map()) => ({
+    a,
+    on: (t, h, hs = a.get(t)) => hs ? hs.push(h) : a.set(t, [h]),
+    off: (t, h, hs = a.get(t)) => hs && h ? hs.splice(hs.indexOf(h) >>> 0, 1) : a.set(t, []),
+    emit: (t, e, hs = a.get(t)) => hs?.slice().map((h) => h(e))
+}), c = {
+    s: new Map(),
+    em: em()
+}, a = (opt) => ({
+    key: opt.key,
+    default: opt.default,
+    get: () => c.s.get(opt.key) ?? opt.default,
+    set: (v) => { c.s.set(opt.key, v); c.em.emit(opt.key, v); },
+    sub: (h) => {
+        c.em.on(opt.key, h);
+        return () => c.em.off(opt.key, h);
+    }
+}), w = (st) => {
+    const [v, dispatch] = useState(st.get());
+    useLayoutEffect(() => st.sub(dispatch), []);
+    return v;
+}, q = (st) => (v) => st.set(v), e = (st) => [w(st), q(st)], r = (st) => [t(st), q(st)], t = (st) => {
+    const v = useRef(st.get());
+    useLayoutEffect(() => st.sub((vl) => { v.current = vl; }), []);
+    return v;
+};
+export const atom = a, useGlobalValue = w, useSetGlobalState = q, useGlobalState = e, useUnSubGlobalState = r, useUnSubGlobalValue = t;

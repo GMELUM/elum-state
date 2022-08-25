@@ -36,9 +36,9 @@ const em = <Events extends Record<EventType, unknown>>(
   ,
   emit: <Key extends keyof Events>(
     t: Key,
-    e?: Events[Key],
+    e: Events[Key],
     hs: EventhList<Events[keyof Events]> | undefined = a.get(t)) =>
-    hs && e && hs.slice().map((h) => h(e))
+    hs?.slice().map((h) => h(e))
 }),
   c = {
     s: new Map<string, any>(),
