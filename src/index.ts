@@ -1,13 +1,13 @@
 import { Dispatch, useLayoutEffect, useRef, useState } from "react";
 
 type EventType = string | symbol;
-type h<T = unknown> = (event: T) => void;
-type EventhList<T = unknown> = Array<h<T>>;
+type h<T> = (event: T) => void;
+type EventhList<T> = Array<h<T>>;
 type EventhMap<Events extends Record<EventType, unknown>> = Map<keyof Events, EventhList<Events[keyof Events]>>;
 
 type Atom<T> = {
   key: string;
-  default: T;
+  default?: T;
 };
 
 type GlobalAtom<T> = {
@@ -46,7 +46,7 @@ const em = <Events extends Record<EventType, unknown>>(
   },
   a = <T>(opt: Atom<T>): GlobalAtom<T> => ({
     key: opt.key,
-    default: opt.default,
+    default: (opt.default as T),
     get: () => c.s.get(opt.key) ?? opt.default,
     set: (v) => { c.s.set(opt.key, v); c.em.emit(opt.key, v); },
     sub: (h) => {

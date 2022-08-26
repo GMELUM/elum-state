@@ -1,7 +1,7 @@
 import { Dispatch } from "react";
 declare type Atom<T> = {
     key: string;
-    default: T;
+    default?: T;
 };
 declare type GlobalAtom<T> = {
     key: string;
@@ -10,9 +10,10 @@ declare type GlobalAtom<T> = {
     set: (v: any) => void;
     sub: (handle: Dispatch<T>) => void;
 };
-export declare const atom: <T>(opt: Atom<T>) => GlobalAtom<T>, useGlobalValue: <T>(st: GlobalAtom<T>) => T, useSetGlobalState: <T>(st: GlobalAtom<T>) => (v: T) => void, useGlobalState: <T>(st: GlobalAtom<T>) => [T, (v: T) => void], useUnSubGlobalState: <T>(st: GlobalAtom<T>) => [{
-    current: T;
-}, (v: T) => void], useUnSubGlobalValue: <T>(st: GlobalAtom<T>) => {
-    current: T;
-};
+export declare const atom: <T>(opt: Atom<T>) => GlobalAtom<T>, 
+useGlobalValue: <T>(st: GlobalAtom<T>) => T, 
+useSetGlobalState: <T>(st: GlobalAtom<T>) => (v: T) => void, 
+useGlobalState: <T>(st: GlobalAtom<T>) => [T, (v: T) => void], 
+useUnSubGlobalState: <T>(st: GlobalAtom<T>) => [{ current: T; }, (v: T) => void], 
+useUnSubGlobalValue: <T>(st: GlobalAtom<T>) => { current: T; };
 export {};
