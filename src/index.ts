@@ -18,10 +18,7 @@ type GlobalAtom<T> = {
   sub: (handle: Dispatch<T>) => void;
 }
 
-type TSetter = {
-  <T>(a: GlobalAtom<T>, v: T): void;
-  <T>(a: GlobalAtom<T>, v: (v: T) => T): void;
-}
+type SetStateAction<S> = S | ((prevState: S) => S);
 
 const em = <Events extends Record<EventType, unknown>>(
   m: EventhMap<Events> = new Map()
@@ -64,14 +61,14 @@ const em = <Events extends Record<EventType, unknown>>(
     return v;
   },
   g = <T>(b: GlobalAtom<T>): T => b.get(),
-  s: TSetter = (n, v) => {
+  s = <T>(n: GlobalAtom<T>, v: SetStateAction<T>) => {
     typeof v === "function" ?
       n.set((v as Function)(g(n))) :
       n.set(v);
   },
-  q = <T>(l: GlobalAtom<T>): (v: T) => void => (v: T) => l.set(v),
-  e = <T>(l: GlobalAtom<T>): [T, (v: T) => void] => [w(l), q(l)],
-  r = <T>(l: GlobalAtom<T>): [{ current: T }, (v: T) => void] => [t(l), q(l)],
+  q = <T>(l: GlobalAtom<T>): Dispatch<SetStateAction<T>> => (v: SetStateAction<T>) => s(l, v),
+  e = <T>(l: GlobalAtom<T>): [T, Dispatch<SetStateAction<T>>] => [w(l), q(l)],
+  r = <T>(l: GlobalAtom<T>): [{ current: T }, Dispatch<SetStateAction<T>>] => [t(l), q(l)],
   t = <T>(l: GlobalAtom<T>): { current: T } => {
     const v = useRef<T>(l.get());
     useLayoutEffect(() => l.sub((vl: T) => { v.current = vl }), []);
