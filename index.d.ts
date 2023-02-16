@@ -1,19 +1,31 @@
-import { Dispatch } from "react";
-declare type Atom<T> = {
+import { Dispatch } from 'react';
+
+type Atom<T> = {
     key: string;
     default?: T;
 };
-declare type GlobalAtom<T> = {
+type GlobalAtom<T> = {
     key: string;
     default: T;
     get: () => T;
     set: (v: any) => void;
     sub: (handle: Dispatch<T>) => void;
 };
-export declare const atom: <T>(opt: Atom<T>) => GlobalAtom<T>, 
-useGlobalValue: <T>(st: GlobalAtom<T>) => T, 
-useSetGlobalState: <T>(st: GlobalAtom<T>) => (v: T) => void, 
-useGlobalState: <T>(st: GlobalAtom<T>) => [T, (v: T) => void], 
-useUnSubGlobalState: <T>(st: GlobalAtom<T>) => [{ current: T; }, (v: T) => void], 
-useUnSubGlobalValue: <T>(st: GlobalAtom<T>) => { current: T; };
-export {};
+type TSetter = {
+    <T>(a: GlobalAtom<T>, v: T): void;
+    <T>(a: GlobalAtom<T>, v: (v: T) => T): void;
+};
+declare const atom: <T>(opt: Atom<T>) => GlobalAtom<T>;
+declare const getter: <T>(b: GlobalAtom<T>) => T;
+declare const setter: TSetter;
+declare const useGlobalValue: <T>(l: GlobalAtom<T>) => T;
+declare const useSetGlobalState: <T>(l: GlobalAtom<T>) => (v: T) => void;
+declare const useGlobalState: <T>(l: GlobalAtom<T>) => [T, (v: T) => void];
+declare const useUnSubGlobalState: <T>(l: GlobalAtom<T>) => [{
+    current: T;
+}, (v: T) => void];
+declare const useUnSubGlobalValue: <T>(l: GlobalAtom<T>) => {
+    current: T;
+};
+
+export { atom, getter, setter, useGlobalState, useGlobalValue, useSetGlobalState, useUnSubGlobalState, useUnSubGlobalValue };
