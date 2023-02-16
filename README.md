@@ -49,7 +49,7 @@ const App = () => {
 	const state = useGlobalValue(COUNT);
 
 	const handleClick = () => {
-		const count = getter(COUNT, (value) => value + 1);
+		const count = getter(COUNT);
 		console.log(count);
 	}
 
