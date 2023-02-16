@@ -18,27 +18,31 @@ type GlobalAtom<T> = {
   sub: (handle: Dispatch<T>) => void;
 }
 
+type TSetter = {
+  <T>(a: GlobalAtom<T>, v: T): void;
+  <T>(a: GlobalAtom<T>, v: (v: T) => T): void;
+}
+
 const em = <Events extends Record<EventType, unknown>>(
-  a: EventhMap<Events> = new Map()
+  m: EventhMap<Events> = new Map()
 ) => ({
-  a,
   on: <Key extends keyof Events>(
-    t: Key,
+    k: Key,
     h: h<Events[keyof Events]>,
-    hs: EventhList<Events[keyof Events]> | undefined = a.get(t)) =>
-    hs ? hs.push(h) : a.set(t, [h] as EventhList<Events[keyof Events]>)
+    x: EventhList<Events[keyof Events]> | undefined = m.get(k)) =>
+    x ? x.push(h) : m.set(k, [h] as EventhList<Events[keyof Events]>)
   ,
   off: <Key extends keyof Events>(
-    t: Key,
+    k: Key,
     h: h<Events[keyof Events]>,
-    hs: EventhList<Events[keyof Events]> | undefined = a.get(t)) =>
-    hs && h ? hs.splice(hs.indexOf(h) >>> 0, 1) : a.set(t, [])
+    x: EventhList<Events[keyof Events]> | undefined = m.get(k)) =>
+    x && h ? x.splice(x.indexOf(h) >>> 0, 1) : m.set(k, [])
   ,
   emit: <Key extends keyof Events>(
-    t: Key,
-    e: Events[Key],
-    hs: EventhList<Events[keyof Events]> | undefined = a.get(t)) =>
-    hs?.slice().map((h) => h(e))
+    k: Key,
+    z: Events[Key],
+    x: EventhList<Events[keyof Events]> | undefined = m.get(k)) =>
+    x && x.slice().map((h) => h(z))
 }),
   c = {
     s: new Map<string, any>(),
@@ -54,22 +58,30 @@ const em = <Events extends Record<EventType, unknown>>(
       return () => c.em.off(opt.key, h);
     }
   }),
-  w = <T>(st: GlobalAtom<T>): T => {
-    const [v, dispatch] = useState(st.get());
-    useLayoutEffect(() => st.sub(dispatch), []);
+  w = <T>(l: GlobalAtom<T>): T => {
+    const [v, dispatch] = useState(l.get());
+    useLayoutEffect(() => l.sub(dispatch), []);
     return v;
   },
-  q = <T>(st: GlobalAtom<T>): (v: T) => void => (v: T) => st.set(v),
-  e = <T>(st: GlobalAtom<T>): [T, (v: T) => void] => [w(st), q(st)],
-  r = <T>(st: GlobalAtom<T>): [{ current: T }, (v: T) => void] => [t(st), q(st)],
-  t = <T>(st: GlobalAtom<T>): { current: T } => {
-    const v = useRef<T>(st.get());
-    useLayoutEffect(() => st.sub((vl: T) => { v.current = vl }), []);
+  g = <T>(b: GlobalAtom<T>): T => b.get(),
+  s: TSetter = (n, v) => {
+    typeof v === "function" ?
+      n.set((v as Function)(g(n))) :
+      n.set(v);
+  },
+  q = <T>(l: GlobalAtom<T>): (v: T) => void => (v: T) => l.set(v),
+  e = <T>(l: GlobalAtom<T>): [T, (v: T) => void] => [w(l), q(l)],
+  r = <T>(l: GlobalAtom<T>): [{ current: T }, (v: T) => void] => [t(l), q(l)],
+  t = <T>(l: GlobalAtom<T>): { current: T } => {
+    const v = useRef<T>(l.get());
+    useLayoutEffect(() => l.sub((vl: T) => { v.current = vl }), []);
     return v;
   };
 
 export const
   atom = a,
+  getter = g,
+  setter = s,
   useGlobalValue = w,
   useSetGlobalState = q,
   useGlobalState = e,

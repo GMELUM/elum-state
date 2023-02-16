@@ -1,19 +1,19 @@
 {
   "name": "elum-state",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "description": "Elum State - A state management library for React",
-  "main": "./index.js",
-  "types": "./index.d.ts",
+  "main": "index.js",
+  "module": "index.mjs",
+  "typings": "index.d.ts",
   "license": "MIT",
-  "author": { "name": "Artur Frank", "url":"https://vk.com/gmelum"},
+  "author": {
+    "name": "Artur Frank",
+    "url": "https://vk.com/gmelum"
+  },
   "contributors": [],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GMELUM/elum-state.git"
-  },
-  "peerDependencies": {
-    "react": "^18 || ^17",
-    "react-dom": "^18 || ^17"
   },
   "keywords": [
     "state",
@@ -23,5 +23,9 @@
     "recoil",
     "state",
     "elum"
-  ]
+  ],
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  }
 }

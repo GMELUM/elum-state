@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "sourceMap": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -21,8 +20,9 @@
     "resolveJsonModule": true,
   },
   "include": [
-    "**/*.ts",
-    "rollup.config.ts",
+    "testing.ts",
   ],
-  "exclude": ["node_modules","src/**/*.test.ts","index.ts","dist/**/*"]
+  "exclude": [
+    "node_modules"
+  ]
 }

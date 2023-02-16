@@ -1,37 +1,35 @@
 {
-  "author": {
-    "name": "Artur Frank",
-    "url": "https://vk.com/gmelum"
-  },
-  "contributors": [],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GMELUM/elum-state.git"
-  },
   "scripts": {
-    "build": "tsc && cp -r static/* ./dist",
-    "start": "yarn build && cross-env NODE_PATH=./dist nodemon",
-    "minify": "terser dist/index.js --output dist/index.js",
-    "release": "git subtree push --prefix dist https://github.com/GMELUM/elum-state release"
-  },
-  "nodemonConfig": {
-    "watch": [
-      "src",
-      "index.ts"
-    ],
-    "ext": "ts",
-    "exec": "tsc && ts-node index.ts"
+    "prebuild": "run-script-os",
+    "prebuild:win32": "rd /s /q .\\dist || mkdir .\\dist\\",
+    "prebuild:linux": "rm -rf ./dist/*",
+    "copy": "run-script-os",
+    "copy:win32": "Xcopy .\\static .\\dist /E /H /C /I",
+    "copy:linux": "cp -r static/* ./dist",
+    "build": "yarn prebuild && rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript && yarn copy",
+    "release": "git subtree push --prefix dist https://github.com/GMELUM/elum-state release",
+    "start": "ts-node --project tsconfig.node.json -r tsconfig-paths/register src/index.ts",
+    "publish:beta": "npm publish --tag beta"
   },
   "devDependencies": {
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^18.0.6",
-    "nodemon": "^2.0.19",
-    "ts-node": "^10.8.2",
-    "typescript": "^4.7.4",
-    "terser": "^5.14.2"
+    "@rollup/plugin-typescript": "latest",
+    "@types/node": "latest",
+    "cross-env": "latest",
+    "esbuild": "latest",
+    "nodemon": "latest",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rollup": "latest",
+    "rollup-plugin-dts": "latest",
+    "rollup-plugin-esbuild": "latest",
+    "run-script-os": "^1.1.6",
+    "tsconfig-paths": "latest",
+    "tslib": "latest",
+    "typescript": "latest"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@rollup/plugin-terser": "^0.4.0",
+    "@types/react": "^18.0.28",
+    "rollup-plugin-cleanup": "^3.2.1"
   }
 }
