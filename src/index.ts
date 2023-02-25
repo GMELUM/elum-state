@@ -1,86 +1,76 @@
-import { Dispatch, useLayoutEffect, useRef, useState } from "react";
+import { Dispatch, useLayoutEffect, useState } from "react";
 
 type EventType = string | symbol;
-type h<T> = (event: T) => void;
-type EventhList<T> = Array<h<T>>;
+type EventHandler<T> = (event: T) => void;
+type EventhList<T> = Array<EventHandler<T>>;
 type EventhMap<Events extends Record<EventType, unknown>> = Map<keyof Events, EventhList<Events[keyof Events]>>;
 
-type Atom<T> = {
-  key: string;
-  default?: T;
+interface Atom<T> {
+  readonly key: string;
+  readonly default?: T;
 };
 
-type GlobalAtom<T> = {
-  key: string;
-  default: T;
-  get: () => T;
-  set: (v: any) => void;
-  sub: (handle: Dispatch<T>) => void;
+interface GlobalAtom<T> extends Required<Atom<T>> {
+  readonly get: () => T;
+  readonly set: (v: T) => void;
+  readonly sub: (handle: Dispatch<T>) => void;
 }
 
 type SetStateAction<S> = S | ((prevState: S) => S);
 
-const em = <Events extends Record<EventType, unknown>>(
-  m: EventhMap<Events> = new Map()
+const events = <Events extends Record<EventType, unknown>>(
+  map: EventhMap<Events> = new Map()
 ) => ({
   on: <Key extends keyof Events>(
-    k: Key,
-    h: h<Events[keyof Events]>,
-    x: EventhList<Events[keyof Events]> | undefined = m.get(k)) =>
-    x ? x.push(h) : m.set(k, [h] as EventhList<Events[keyof Events]>)
-  ,
+    key: Key,
+    handler: EventHandler<Events[keyof Events]>,
+    x: EventhList<Events[keyof Events]> | undefined = map.get(key)) =>
+    x ? x.push(handler) : map.set(key, [handler]),
   off: <Key extends keyof Events>(
-    k: Key,
-    h: h<Events[keyof Events]>,
-    x: EventhList<Events[keyof Events]> | undefined = m.get(k)) =>
-    x && h ? x.splice(x.indexOf(h) >>> 0, 1) : m.set(k, [])
-  ,
+    key: Key,
+    handler: EventHandler<Events[keyof Events]>,
+    x: EventhList<Events[keyof Events]> | undefined = map.get(key)) =>
+    x && handler ? x.splice(x.indexOf(handler) >>> 0, 1) : map.set(key, []),
   emit: <Key extends keyof Events>(
     k: Key,
     z: Events[Key],
-    x: EventhList<Events[keyof Events]> | undefined = m.get(k)) =>
-    x && x.slice().map((h) => h(z))
+    x: EventhList<Events[keyof Events]> | undefined = map.get(k)) => {
+    if (!x) { return; }
+    for (const handler of x) { handler(z) }
+  }
 }),
-  c = {
-    s: new Map<string, any>(),
-    em: em<Record<string, any>>()
+  context = {
+    map: new Map<string, any>(),
+    events: events<Record<string, any>>()
   },
-  a = <T>(opt: Atom<T>): GlobalAtom<T> => ({
+  atom = <T>(opt: Atom<T>): GlobalAtom<T> => ({
     key: opt.key,
-    default: (opt.default as T),
-    get: () => c.s.get(opt.key) ?? opt.default,
-    set: (v) => { c.s.set(opt.key, v); c.em.emit(opt.key, v); },
-    sub: (h) => {
-      c.em.on(opt.key, h);
-      return () => c.em.off(opt.key, h);
+    default: opt.default as T,
+    get: () => context.map.get(opt.key) ?? opt.default,
+    set: (value) => { context.map.set(opt.key, value); context.events.emit(opt.key, value); },
+    sub: (value) => {
+      context.events.on(opt.key, value);
+      return () => context.events.off(opt.key, value);
     }
   }),
-  w = <T>(l: GlobalAtom<T>): T => {
-    const [v, dispatch] = useState(l.get());
+  getter = <T>(b: GlobalAtom<T>): T => b.get(),
+  setter = <T>(n: GlobalAtom<T>, v: SetStateAction<T>) =>
+    n.set(typeof v === "function" ? (v as Function)(getter(n)) : v),
+  useGlobalValue = <T>(l: GlobalAtom<T>): T => {
+    const [v, dispatch] = useState(getter(l));
     useLayoutEffect(() => l.sub(dispatch), []);
     return v;
   },
-  g = <T>(b: GlobalAtom<T>): T => b.get(),
-  s = <T>(n: GlobalAtom<T>, v: SetStateAction<T>) => {
-    typeof v === "function" ?
-      n.set((v as Function)(g(n))) :
-      n.set(v);
-  },
-  q = <T>(l: GlobalAtom<T>): Dispatch<SetStateAction<T>> => (v: SetStateAction<T>) => s(l, v),
-  e = <T>(l: GlobalAtom<T>): [T, Dispatch<SetStateAction<T>>] => [w(l), q(l)],
-  r = <T>(l: GlobalAtom<T>): [{ current: T }, Dispatch<SetStateAction<T>>] => [t(l), q(l)],
-  t = <T>(l: GlobalAtom<T>): { current: T } => {
-    const v = useRef<T>(l.get());
-    useLayoutEffect(() => l.sub((vl: T) => { v.current = vl }), []);
-    return v;
-  };
+  useSetGlobalState = <T>(l: GlobalAtom<T>): Dispatch<SetStateAction<T>> => (v: SetStateAction<T>) => setter(l, v),
+  useGlobalState = <T>(l: GlobalAtom<T>): [T, Dispatch<SetStateAction<T>>] => [useGlobalValue(l), useSetGlobalState(l)]
 
-export const
-  atom = a,
-  getter = g,
-  setter = s,
-  useGlobalValue = w,
-  useSetGlobalState = q,
-  useGlobalState = e,
-  useUnSubGlobalState = r,
-  useUnSubGlobalValue = t;
+export {
+  atom,
+  getter,
+  setter,
+  useGlobalValue,
+  useSetGlobalState,
+  useGlobalState,
+  GlobalAtom,
+  Atom
+}
