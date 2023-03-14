@@ -98,20 +98,7 @@ const App = () => {
 };
 ```
 
-### useSetGlobalState
-
-Returns a setter function for updating the value of writeable global state.
-
-```jsx
-import { useSetGlobalState } from "elum-state";
-
-const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
-
-const App = () => {
-  const setState = useSetGlobalState(EXAMPLE_ATOM);
-  return <div onClick={() => setState("hello")}></div>;
-};
-```
+### useSetGlobalState #DELETED
 
 ### useUnSubGlobalState #DELETED
 
