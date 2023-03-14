@@ -14,7 +14,6 @@ declare const atom: <T>(opt: Atom<T>) => GlobalAtom<T>;
 declare const getter: <T>(b: GlobalAtom<T>) => T;
 declare const setter: <T>(n: GlobalAtom<T>, v: SetStateAction<T>) => void;
 declare const useGlobalValue: <T>(l: GlobalAtom<T>) => T;
-declare const useSetGlobalState: <T>(l: GlobalAtom<T>) => Dispatch<SetStateAction<T>>;
 declare const useGlobalState: <T>(l: GlobalAtom<T>) => [T, Dispatch<SetStateAction<T>>];
 
-export { Atom, GlobalAtom, atom, getter, setter, useGlobalState, useGlobalValue, useSetGlobalState };
+export { Atom, GlobalAtom, atom, getter, setter, useGlobalState, useGlobalValue };
