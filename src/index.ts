@@ -61,15 +61,13 @@ const events = <Events extends Record<EventType, unknown>>(
     useLayoutEffect(() => l.sub(dispatch), []);
     return v;
   },
-  useSetGlobalState = <T>(l: GlobalAtom<T>): Dispatch<SetStateAction<T>> => (v: SetStateAction<T>) => setter(l, v),
-  useGlobalState = <T>(l: GlobalAtom<T>): [T, Dispatch<SetStateAction<T>>] => [useGlobalValue(l), useSetGlobalState(l)]
+  useGlobalState = <T>(l: GlobalAtom<T>): [T, Dispatch<SetStateAction<T>>] => [useGlobalValue(l), (v: SetStateAction<T>) => setter(l, v)]
 
 export {
   atom,
   getter,
   setter,
   useGlobalValue,
-  useSetGlobalState,
   useGlobalState,
   GlobalAtom,
   Atom

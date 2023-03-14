@@ -1,23 +1,29 @@
+import { RollupOptions } from "rollup";
 import dts from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
-
 import terser from '@rollup/plugin-terser';
-
-import { RollupOptions } from "rollup";
-
 import copy from "rollup-plugin-copy";
 
-const external = ["react"]
+const external = ["react"];
 
 const config: RollupOptions[] = [
   {
     input: 'src/index.ts',
+    treeshake: false,
     output: [
       {
         file: `dist/index.js`,
         format: 'cjs',
         sourcemap: false,
-      },
+      }
+    ],
+    external: (name) => external.includes(name),
+    plugins: [esbuild(), terser()]
+  },
+  {
+    input: 'src/index.ts',
+    treeshake: false,
+    output: [
       {
         file: `dist/index.mjs`,
         format: 'es',
@@ -25,7 +31,14 @@ const config: RollupOptions[] = [
       },
     ],
     external: (name) => external.includes(name),
-    plugins: [esbuild(), terser()]
+    plugins: [esbuild(), terser({
+      compress: false,
+      mangle: true,
+      toplevel: true,
+      output: {
+        comments: false
+      }
+    })]
   },
   {
     input: 'src/index.ts',
