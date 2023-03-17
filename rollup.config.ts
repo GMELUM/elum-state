@@ -12,6 +12,11 @@ const config: RollupOptions[] = [
     treeshake: false,
     output: [
       {
+        file: `dist/index.mjs`,
+        format: 'es',
+        sourcemap: false,
+      },
+      {
         file: `dist/index.js`,
         format: 'cjs',
         sourcemap: false,
@@ -19,26 +24,6 @@ const config: RollupOptions[] = [
     ],
     external: (name) => external.includes(name),
     plugins: [esbuild(), terser()]
-  },
-  {
-    input: 'src/index.ts',
-    treeshake: false,
-    output: [
-      {
-        file: `dist/index.mjs`,
-        format: 'es',
-        sourcemap: false,
-      },
-    ],
-    external: (name) => external.includes(name),
-    plugins: [esbuild(), terser({
-      compress: false,
-      mangle: true,
-      toplevel: true,
-      output: {
-        comments: false
-      }
-    })]
   },
   {
     input: 'src/index.ts',

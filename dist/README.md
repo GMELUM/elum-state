@@ -97,9 +97,3 @@ const App = () => {
   return <div>{state}</div>;
 };
 ```
-
-### useSetGlobalState #DELETED
-
-### useUnSubGlobalState #DELETED
-
-### useUnSubGlobalValue #DELETED

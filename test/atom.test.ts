@@ -2,8 +2,8 @@ import { COUNT } from "./testData"
 
 test("atom", () => {
   expect({
-    key: COUNT.key,
-    default: COUNT.default
+    key: COUNT.k,
+    default: COUNT.d
   }).toMatchObject({
     key: "count",
     default: 0
