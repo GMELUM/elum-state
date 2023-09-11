@@ -1,6 +1,6 @@
 {
   "name": "elum-state",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Elum State - A state management library for React",
   "main": "index.js",
   "module": "index.mjs",
