@@ -18,7 +18,7 @@ interface GlobalAtom<T> {
   readonly sb: (handle: react.Dispatch<T>) => void;
 }
 
-type SetStateAction<S> = S | ((prevState: S) => S);
+type SetStateAction<S> = S | ((prevState: S) => S | undefined) | undefined;
 
 const events = <Events extends Record<EventType, unknown>>(
   map: EventhMap<Events> = new Map()

@@ -11,11 +11,11 @@ interface GlobalAtom<T> {
     readonly s: (v: T) => void;
     readonly sb: (handle: react.Dispatch<T>) => void;
 }
-type SetStateAction<S> = S | ((prevState: S) => S);
+type SetStateAction<S> = S | ((prevState: S) => S | undefined) | undefined;
 declare const atom: <T>(opt: Atom<T>) => GlobalAtom<T>;
 declare const getter: <T>(atom: GlobalAtom<T>) => T;
 declare const setter: <T>(atom: GlobalAtom<T>, v: SetStateAction<T>) => void;
 declare const useGlobalValue: <T>(atom: GlobalAtom<T>) => T;
 declare const useGlobalState: <T>(atom: GlobalAtom<T>) => [T, react.Dispatch<SetStateAction<T>>];
 
-export { Atom, GlobalAtom, atom, getter, setter, useGlobalState, useGlobalValue };
+export { type Atom, type GlobalAtom, atom, getter, setter, useGlobalState, useGlobalValue };
