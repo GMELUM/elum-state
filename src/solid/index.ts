@@ -76,5 +76,7 @@ export {
   getter,
   setter,
   globalSignal,
-  globalStore
+  globalStore,
+  GlobalAtom,
+  Atom
 }

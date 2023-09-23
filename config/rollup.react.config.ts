@@ -26,7 +26,7 @@ const config: RollupOptions[] = [
     plugins: [esbuild(), terser()]
   },
   {
-    input: 'src/solid/index.ts',
+    input: 'src/react/index.ts',
     external: (name) => external.includes(name),
     plugins: [dts(), copy({
       targets: [

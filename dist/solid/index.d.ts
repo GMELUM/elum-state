@@ -20,4 +20,4 @@ declare const setter: <T>(atom: GlobalAtom<T>, v: SetStateAction<T>) => void;
 declare const globalSignal: <T>(atom: GlobalAtom<T>) => Signal<T>;
 declare const globalStore: <T extends object>(atom: GlobalAtom<T>) => [get: T, set: solid_js_store.SetStoreFunction<T>];
 
-export { atom, getter, globalSignal, globalStore, setter };
+export { type Atom, type GlobalAtom, atom, getter, globalSignal, globalStore, setter };
