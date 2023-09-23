@@ -1,5 +1,4 @@
-import * as solid_js_store from 'solid-js/store';
-import { Signal } from 'solid-js';
+import react from 'react';
 
 interface Atom<T> {
     readonly key: string;
@@ -10,14 +9,13 @@ interface GlobalAtom<T> {
     readonly d: T;
     readonly g: () => T;
     readonly s: (v: T) => void;
-    readonly sb: (handle: (v: T) => void) => void;
-    readonly usb: (handle: (v: T) => void) => void;
+    readonly sb: (handle: react.Dispatch<T>) => void;
 }
 type SetStateAction<S> = S | ((prevState: S) => S | undefined) | undefined;
 declare const atom: <T>(opt: Atom<T>) => GlobalAtom<T>;
 declare const getter: <T>(atom: GlobalAtom<T>) => T;
 declare const setter: <T>(atom: GlobalAtom<T>, v: SetStateAction<T>) => void;
-declare const globalSignal: <T>(atom: GlobalAtom<T>) => Signal<T>;
-declare const globalStore: <T extends object>(atom: GlobalAtom<T>) => [get: T, set: solid_js_store.SetStoreFunction<T>];
+declare const useGlobalValue: <T>(atom: GlobalAtom<T>) => T;
+declare const useGlobalState: <T>(atom: GlobalAtom<T>) => [T, react.Dispatch<SetStateAction<T>>];
 
-export { atom, getter, globalSignal, globalStore, setter };
+export { type Atom, type GlobalAtom, atom, getter, setter, useGlobalState, useGlobalValue };
