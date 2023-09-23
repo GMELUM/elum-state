@@ -1,10 +1,7 @@
 {
   "name": "elum-state",
-  "version": "0.6.2",
-  "description": "Elum State - A state management library for React",
-  "main": "index.js",
-  "module": "index.mjs",
-  "typings": "index.d.ts",
+  "version": "0.7.0",
+  "description": "Elum State - A state management library for React and SolidJS",
   "license": "MIT",
   "author": {
     "name": "Artur Frank",
@@ -22,10 +19,7 @@
     "react",
     "recoil",
     "state",
-    "elum"
-  ],
-  "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
-  }
+    "elum",
+    "solidjs"
+  ]
 }

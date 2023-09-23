@@ -1,20 +1,21 @@
 {
   "scripts": {
-    "build": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
-    "release": "git subtree push --prefix dist https://github.com/GMELUM/elum-state release",
-    "start": "ts-node --project tsconfig.node.json -r tsconfig-paths/register src/index.ts",
-    "test": "jest --config jest.config.json",
-    "publish:beta": "npm publish --tag beta"
+    "build:react": "rollup --config config/rollup.react.config.ts --configPlugin @rollup/plugin-typescript",
+    "build:solid": "rollup --config config/rollup.solid.config.ts --configPlugin @rollup/plugin-typescript",
+    "build": "npm run build:react && npm run build:solid",
+    "test": "jest --config jest.config.ts",
+    "release": "git subtree push --prefix dist https://github.com/GMELUM/elum-state release"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.0",
     "@rollup/plugin-typescript": "latest",
-    "@types/jest": "^29.4.0",
+    "@types/jest": "^29.5.5",
     "@types/node": "latest",
     "@types/react": "^18.0.28",
     "cross-env": "latest",
     "esbuild": "latest",
-    "jest": "^29.4.3",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "nodemon": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -24,11 +25,11 @@
     "rollup-plugin-dts": "latest",
     "rollup-plugin-esbuild": "latest",
     "run-script-os": "^1.1.6",
+    "solid-js": "^1.7.12",
+    "ts-node": "^10.9.1",
     "tsconfig-paths": "latest",
-    "tslib": "latest",
-    "typescript": "latest"
-  },
-  "dependencies": {
-    "ts-jest": "^29.0.5"
+    "tslib": "^2.6.2",
+    "typescript": "latest",
+    "ts-jest": "^29.1.1"
   }
 }

@@ -1,0 +1,17 @@
+{
+  "name": "elum-state/react",
+  "main": "index.js",
+  "module": "index.mjs",
+  "typings": "index.d.ts",
+  "browser": {
+    "./dist/server.cjs": "index.cjs",
+    "./dist/server.js": "index.js"
+  },
+  "unpkg": "index.cjs",
+  "types": "index.d.ts",
+  "type": "module",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  }
+}

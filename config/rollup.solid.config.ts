@@ -4,20 +4,20 @@ import esbuild from 'rollup-plugin-esbuild';
 import terser from '@rollup/plugin-terser';
 import copy from "rollup-plugin-copy";
 
-const external = ["react"];
+const external = ["solidjs"];
 
 const config: RollupOptions[] = [
   {
-    input: 'src/index.ts',
+    input: 'src/solid/index.ts',
     treeshake: false,
     output: [
       {
-        file: `dist/index.mjs`,
+        file: `dist/solid/index.mjs`,
         format: 'es',
         sourcemap: false,
       },
       {
-        file: `dist/index.js`,
+        file: `dist/solid/index.js`,
         format: 'cjs',
         sourcemap: false,
       }
@@ -26,17 +26,18 @@ const config: RollupOptions[] = [
     plugins: [esbuild(), terser()]
   },
   {
-    input: 'src/index.ts',
+    input: 'src/solid/index.ts',
     external: (name) => external.includes(name),
     plugins: [dts(), copy({
       targets: [
         { src: "LICENSE", dest: "dist" },
         { src: "README.md", dest: "dist" },
-        { src: "package.npm.json", dest: "dist", rename: "package.json" }
+        { src: "src/solid/package.json", dest: "dist", rename: "solid/package.json" }
       ]
-    })],
+    })
+    ],
     output: {
-      file: `dist/index.d.ts`,
+      file: `dist/solid/index.d.ts`,
       format: 'es',
     },
   }
