@@ -1,0 +1,16 @@
+{
+  "name": "elum-state/solid",
+  "main": "index.js",
+  "module": "index.mjs",
+  "typings": "index.d.ts",
+  "browser": {
+    "./dist/server.cjs": "index.cjs",
+    "./dist/server.js": "index.js"
+  },
+  "unpkg": "index.cjs",
+  "types": "index.d.ts",
+  "type": "module",
+  "peerDependencies": {
+    "solid-js": "^1.7.12"
+  }
+}
