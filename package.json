@@ -1,6 +1,6 @@
 {
   "name": "elum-state",
-  "version": "0.7.2",
+  "version": "0.7.6",
   "description": "Elum State - A state management library for React and SolidJS",
   "license": "MIT",
   "author": {
