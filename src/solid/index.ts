@@ -1,4 +1,4 @@
-import { Signal, createSignal, onCleanup, onMount } from "solid-js";
+import { Setter, Signal, createEffect, createSignal, mergeProps, onCleanup, onMount } from "solid-js";
 import { createStore } from "solid-js/store";
 
 type EventType = string | symbol;
@@ -12,8 +12,8 @@ interface Atom<T> {
 }
 
 type GlobalAtom<T> = [
-  string, 
-  T, 
+  string,
+  T,
   () => T,
   (v: T) => void,
   (handle: (v: T) => void) => void,
@@ -58,23 +58,17 @@ const events = <Events extends Record<EventType, unknown>>(
   setter = <T>(atom: GlobalAtom<T>, v: SetStateAction<T>) => atom[3](typeof v === "function" ? (v as Function)(getter(atom)) : v),
   globalSignal = <T>(atom: GlobalAtom<T>): Signal<T> => {
     const signal = createSignal(getter(atom));
-    onMount(() => { atom[4](signal[1]) })
-    onCleanup(() => { atom[5](signal[1]) })
-    return signal;
-  },
-  globalStore = <T extends object>(atom: GlobalAtom<T>) => {
-    const store = createStore(getter(atom));
-    onMount(() => { atom[4](store[1]) });
-    onCleanup(() => { atom[5](store[1]) });
-    return store
-  };
+    createEffect(() => { atom[3](signal[0]()) })
+    onMount(() => atom[4](signal[1]))
+    onCleanup(() => atom[5](signal[1]))
+    return signal
+  }
 
 export {
   atom,
   getter,
   setter,
   globalSignal,
-  globalStore,
   GlobalAtom,
   Atom
 }
