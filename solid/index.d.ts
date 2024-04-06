@@ -1,4 +1,3 @@
-import * as solid_js_store from 'solid-js/store';
 import { Signal } from 'solid-js';
 
 interface Atom<T> {
@@ -18,6 +17,5 @@ declare const atom: <T>(opt: Atom<T>) => GlobalAtom<T>;
 declare const getter: <T>(atom: GlobalAtom<T>) => T;
 declare const setter: <T>(atom: GlobalAtom<T>, v: SetStateAction<T>) => void;
 declare const globalSignal: <T>(atom: GlobalAtom<T>) => Signal<T>;
-declare const globalStore: <T extends object>(atom: GlobalAtom<T>) => [get: T, set: solid_js_store.SetStoreFunction<T>];
 
-export { type Atom, type GlobalAtom, atom, getter, globalSignal, globalStore, setter };
+export { type Atom, type GlobalAtom, atom, getter, globalSignal, setter };
