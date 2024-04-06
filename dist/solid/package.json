@@ -4,8 +4,8 @@
   "module": "index.mjs",
   "typings": "index.d.ts",
   "browser": {
-    "./dist/server.cjs": "index.cjs",
-    "./dist/server.js": "index.js"
+    "./index.cjs": "index.cjs",
+    "./index.js": "index.js"
   },
   "unpkg": "index.cjs",
   "types": "index.d.ts",
