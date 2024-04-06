@@ -5,14 +5,14 @@ interface Atom<T> {
     readonly key: string;
     readonly default?: T;
 }
-interface GlobalAtom<T> {
-    readonly k: string;
-    readonly d: T;
-    readonly g: () => T;
-    readonly s: (v: T) => void;
-    readonly sb: (handle: (v: T) => void) => void;
-    readonly usb: (handle: (v: T) => void) => void;
-}
+type GlobalAtom<T> = [
+    string,
+    T,
+    () => T,
+    (v: T) => void,
+    (handle: (v: T) => void) => void,
+    (handle: (v: T) => void) => void
+];
 type SetStateAction<S> = S | ((prevState: S) => S | undefined) | undefined;
 declare const atom: <T>(opt: Atom<T>) => GlobalAtom<T>;
 declare const getter: <T>(atom: GlobalAtom<T>) => T;
