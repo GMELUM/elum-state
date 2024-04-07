@@ -54,12 +54,11 @@ const context = {
   ]),
   getter = <T>(atom: GlobalAtom<T>): T => atom[2](),
   setter = <T>(atom: GlobalAtom<T>, v: SetStateAction<T>) => atom[3](typeof v === "function" ? (v as Function)(getter(atom)) : v),
- 
   globalSignal = <T>(atom: GlobalAtom<T>): Signal<T> => {
     const signal = createSignal(atom[2]())
     onMount(() => atom[4](signal[1]))
     onCleanup(() => atom[5](signal[1]))
-    return [signal[0], atom[3] as Setter<T>]
+    return [signal[0], ((v: SetStateAction<T>) => { setter(atom, v) }) as Setter<T>]
   }
 
 export {

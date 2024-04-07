@@ -160,12 +160,12 @@ const App = () => {
 This API is similar to the SolidJS [`createSignal`](https://docs.solidjs.com/references/api-reference/basic-reactivity/createSignal) hook except it takes a Global State state instead of a default value as an argument. It returns a tuple of the current value of the state and a setter function. The setter function may either take a new value as an argument or an updater function which receives the previous value as a parameter.
 
 ```jsx
-import { createSignal } from "elum-state/solid";
+import { globalSignal } from "elum-state/solid";
 
 const EXAMPLE_ATOM = atom({ key: "example_atom", default: "" });
 
 const App = () => {
-  const [state, setState] = createSignal(EXAMPLE_ATOM);
+  const [state, setState] = globalSignal(EXAMPLE_ATOM);
   return <div>{state()}</div>;
 };
 ```
