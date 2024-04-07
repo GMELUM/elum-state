@@ -18,4 +18,4 @@ declare const setter: <T>(atom: GlobalAtom<T>, v: SetStateAction<T>) => void;
 declare const useGlobalValue: <T>(atom: GlobalAtom<T>) => T;
 declare const useGlobalState: <T>(atom: GlobalAtom<T>) => [T, react.Dispatch<SetStateAction<T>>];
 
-export { type Atom, type GlobalAtom, atom, getter, setter, useGlobalState, useGlobalValue };
+export { atom, getter, setter, useGlobalState, useGlobalValue };
