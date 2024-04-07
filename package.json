@@ -2,7 +2,7 @@
   "scripts": {
     "build:react": "rollup --config config/rollup.react.config.ts --configPlugin @rollup/plugin-typescript",
     "build:solid": "rollup --config config/rollup.solid.config.ts --configPlugin @rollup/plugin-typescript",
-    "build": "npm run build:react && npm run build:solid",
+    "build": "npm run build:react && npm run build:solid && npm run test",
     "test": "jest --config jest.config.ts",
     "release": "git subtree push --prefix dist https://github.com/GMELUM/elum-state release"
   },
