@@ -1,4 +1,4 @@
-import { Setter, Signal, createSignal, onCleanup, onMount } from "solid-js";
+import { Setter, Signal, createRenderEffect, createSignal, onCleanup, onMount } from "solid-js";
 
 type EventType = string | symbol;
 type EventHandler<T> = (event: T) => void;
@@ -56,7 +56,7 @@ const context = {
   setter = <T>(atom: GlobalAtom<T>, v: SetStateAction<T>) => atom[3](typeof v === "function" ? (v as Function)(getter(atom)) : v),
   globalSignal = <T>(atom: GlobalAtom<T>): Signal<T> => {
     const signal = createSignal(atom[2]())
-    onMount(() => atom[4](signal[1]))
+    createRenderEffect(() => atom[4](signal[1]))
     onCleanup(() => atom[5](signal[1]))
     return [signal[0], ((v: SetStateAction<T>) => { setter(atom, v) }) as Setter<T>]
   }
